@@ -1,5 +1,8 @@
 (ns sablono-repro.core
-  (:require ))
+  (:require [cljsjs.react]
+            [cljsjs.react.dom]
+            [sablono.core :refer [html]] ))
+
 
 (enable-console-print!)
 
@@ -14,3 +17,20 @@
   ;; your application
   ;; (swap! app-state update-in [:__figwheel_counter] inc)
 )
+
+(.render js/ReactDOM
+         (html [:div [:input {:type "text"
+                              :value "hello world"
+                              :on-change (fn [e] (println e))}]])
+         (.getElementById js/document "app"))
+
+(.render js/ReactDOM
+         (.createElement
+           js/React "div" nil
+           (.createElement
+             js/React
+             "input"
+             #js {:type "text"
+                  :value "hello world too"
+                  :onChange (fn [e] (println e))}))
+         (.getElementById js/document "app2"))
